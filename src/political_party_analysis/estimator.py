@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from scipy.stats import multivariate_normal
 
 
 class DensityEstimator:
@@ -20,12 +21,13 @@ class DensityEstimator:
         """
         self.mean = self.data.mean()
         self.cov = np.cov(self.data)
+        self.estimated_distribution = multivariate_normal(mean=self.mean, cov=self.cov)
 
-    def multivariate_normal_variable_generator(self, size:int) -> np.array:
+    def multivariate_normal_variable_generator(self, size:int = 10) -> np.array:
         """ Generate random variables from a multivariate normal distribution.
         """
         
-        return np.random.multivariate_normal(mean=self.mean, cov=self.cov, size=size)
+        return self.estimated_distribution.rvs(size=size)
     
     def map_to_original(self, reduced_data: np.array) -> np.array:
         """Convert reduced data back to its initial dimensions.
