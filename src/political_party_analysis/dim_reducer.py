@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+from sklearn.decomposition import PCA
 
 
 class DimensionalityReducer:
@@ -11,4 +13,15 @@ class DimensionalityReducer:
         self.data = data
         self.feature_columns = data.columns
 
-    ##### YOUR CODE GOES HERE #####
+    def model(self):
+        """Create a PCA model object with 2 principal components"""
+       
+        pca = PCA(n_components=self.n_components)
+        return pca
+
+    def transform_data(self) -> np.array:
+        """Convert high-dimensional data to 2-dimensional using the dimension reduction model."""
+        
+        reduced_data = self.model().fit_transform(self.data[self.feature_columns]) 
+        return reduced_data
+
